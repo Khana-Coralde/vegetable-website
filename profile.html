@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veggie Vibes - My Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+      <img src="Veggielogo1.png" alt="Veggie Vibes Logo">
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="Vegetables.html">Vegetables</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+    </nav>
+    <a href="#" class="profile-icon" id="profileIcon"><i class="fa-solid fa-user"></i></a>
+  </header>
+  
+<section class="hero">
+  <h1>My Profile</h1>
+  <h2><i>Welcome back to Veggie Vibes!</i></h2>
+</section>
+
+<section class="profile-section">
+  <div class="profile-card">
+  <img src="profpic.jpg" alt="Profile Picture">
+  <h2>John Doe</h2>
+  <p>📧 johndoe@email.com</p>
+  <p>📍 Veggie City, PH</p>
+  <a href="#" class="btn">Edit Profile</a>
+
+  <!-- Logout button placed below -->
+  <button id="logoutBtn" class="logout-btn">Logout</button>
+</div>
+
+  <h2>My Orders</h2>
+  <div id="orderHistory">
+  <p>Loading your orders...</p>
+</div>
+  <!-- You can add an order history table here in the future -->
+</section>
+  
+
+<footer>
+  <p>&copy; 2025 Veggie Vibes. All rights reserved.</p>
+</footer>
+
+ <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = localStorage.getItem('user');
+    const orderHistoryContainer = document.getElementById('orderHistory');
+
+    if (!userEmail) {
+      orderHistoryContainer.innerHTML = '<p>Please log in to view your orders.</p>';
+      return;
+    }
+
+    const orders = JSON.parse(localStorage.getItem('orders')) || {};
+    const userOrders = orders[userEmail];
+
+    if (!userOrders || userOrders.length === 0) {
+      orderHistoryContainer.innerHTML = '<p>You have no recent orders.</p>';
+    } else {
+      orderHistoryContainer.innerHTML = '<h3>Order History:</h3>';
+      userOrders.reverse().forEach(order => {
+        const orderDiv = document.createElement('div');
+        orderDiv.classList.add('order');
+        orderDiv.innerHTML = `
+          <h4>Order Date: ${order.date}</h4>
+          <ul>
+            ${order.items.map(item => `<li>${item.name} - ₱${item.price.toFixed(2)}</li>`).join('')}
+          </ul>
+        `;
+        orderHistoryContainer.appendChild(orderDiv);
+      });
+    }
+  });
+</script> 
+  
+</body>
+</html>
